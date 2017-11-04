@@ -33,13 +33,13 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "GPSCalculator_X2.png",
+      "filename" : "GPSTimeCalculator_x2_iPhone.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "GPSCalculator_X3.png",
+      "filename" : "GPSTimeCalculator_x3_iPhone.png",
       "scale" : "3x"
     },
     {
@@ -73,23 +73,27 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "GPSTimeCalculator_x1_iPad.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
-      "scale" : "2x"
-    },
-    {
       "idiom" : "ipad",
-      "size" : "83.5x83.5",
+      "filename" : "GPSTimeCalculator_x2_iPad.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "ios-marketing",
+      "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "GPSTimeCalculator_x1_iPadPro.png",
+      "scale" : "2x"
+    },
+    {
       "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "GPSTimeCalculator_AppStore.jpg",
       "scale" : "1x"
     }
   ],

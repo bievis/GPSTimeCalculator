@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  GPSCalculator
+//  GPSTimeCalculator
 //
 //  Created by Diego on 24/9/17.
 //  Copyright © 2017 Diego Moreno. All rights reserved.
@@ -70,22 +70,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         return ""
     }
-    
-    //    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    //        // Hora seleccionada
-    //        if component == 2
-    //        {
-    //            minuto = row
-    //        }
-    //        else if component == 4
-    //        {
-    //            segundo = row
-    //        }
-    //        else if component == 0
-    //        {
-    //            hora = row
-    //        }
-    //    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -178,12 +162,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         if textfieldWN1024.text!.isEmpty
         {
-            showAlert(titulo: "Campo WN", mensaje: "Campo Vacio")
+            showAlert(titulo: "Campo WN % 1024", mensaje: "Campo Vacio")
             return
         }
         if Int(textfieldWN1024.text!)! < 0
         {
-            showAlert(titulo: "Campo WN", mensaje: "Usar sólo valores positivos")
+            showAlert(titulo: "Campo WN % 1024", mensaje: "Usar sólo valores positivos")
             return
         }
         
@@ -251,12 +235,25 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         EPOCH = formatter.date(from: "1980/1/06 00:00:00")
     }
     
-    func showAlert(titulo : String, mensaje : String) {
-        let alertView = UIAlertView();
-        alertView.addButton(withTitle: "Ok");
-        alertView.title = titulo;
-        alertView.message = mensaje;
-        alertView.show();
+//    func showAlert(titulo : String, mensaje : String) {
+//        let alertView = UIAlertView();
+//        alertView.addButton(withTitle: "Ok");
+//        alertView.title = titulo;
+//        alertView.message = mensaje;
+//        alertView.show();
+//    }
+    
+    func showAlert(titulo: String, mensaje: String)
+    {
+        let alertController = UIAlertController(title: titulo, message: mensaje, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+            print("OK")
+        }
+        
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func greg2gps(year: Int, month: Int, day: Int, hours: Int, minutes: Int, seconds: Int) -> [Int]
