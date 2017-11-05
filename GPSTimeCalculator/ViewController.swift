@@ -90,10 +90,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        conversions = 0
+        nextJump = 0
+        
         self.bannerView.adUnitID = "ca-app-pub-9225943803373012/3668310835"
         self.bannerView.rootViewController = self
-        self.bannerView.load(GADRequest())
-        
+        self.bannerRequest = GADRequest()
+        self.bannerRequest?.testDevices = [ "f73d4ded6dd4c1251e790ce9a21f8013" ];
+
         self.hideKeyboardWhenTappedAround()
         
         let date = Date()
@@ -115,8 +119,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         selecHora.selectRow( minute, inComponent:2, animated:true )
         selecHora.selectRow( second, inComponent:4, animated:true )
         
-        // Para que aparezca la pantalla de inicio durante 1 segundo al menos
-        sleep(1)
+        // Para que aparezca la pantalla de inicio durante 3 segundos al menos
+        sleep(3)
+        
+        self.bannerView.load(bannerRequest)
     }
     
     // Variables
@@ -133,6 +139,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var hora : Int = 0
     var minuto : Int = 0
     var segundo : Int = 0
+    var conversions : Int = 0
+    var nextJump : Int = 0
+    var interstitial : GADInterstitial?
+    var interstitialRequest : GADRequest?
+    var bannerRequest : GADRequest?
     
     // IBOutlet
     @IBOutlet weak var selecFecha: UIDatePicker!
@@ -156,10 +167,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         textfieldWN.text = String(arrResult[0])
         textfieldWN1024.text = String(arrResult[0] % 1024)
         textfieldTOW.text = String(arrResult[1])
+
+        loadAndShowIntersticial()
     }
     
     @IBAction func convert2DateTime(_ sender: Any) {
-        
+
         if textfieldWN1024.text!.isEmpty
         {
             showAlert(titulo: "Campo WN % 1024", mensaje: "Campo Vacio")
@@ -197,10 +210,39 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         selecHora.selectRow( dateComp.hour!, inComponent:0, animated:true )
         selecHora.selectRow( dateComp.minute!, inComponent:2, animated:true )
         selecHora.selectRow( dateComp.second!, inComponent:4, animated:true )
-        
+
+        loadAndShowIntersticial()
     }
     
     // Funciones
+    
+    func loadAndShowIntersticial() {
+        
+        conversions += 1
+
+        if conversions == 1
+        {
+            self.interstitial = GADInterstitial(adUnitID: "ca-app-pub-9225943803373012/6417725114")
+            self.interstitialRequest = GADRequest()
+            self.interstitialRequest?.testDevices = [ "f73d4ded6dd4c1251e790ce9a21f8013" ];
+            self.interstitial?.load(interstitialRequest)
+            
+            nextJump = 2
+        }
+        else if conversions == nextJump
+        {
+            if (self.interstitial?.isReady)!
+            {
+                self.interstitial?.present(fromRootViewController: self)
+            }
+            
+            self.interstitial = GADInterstitial(adUnitID: "ca-app-pub-9225943803373012/6417725114")
+            self.interstitialRequest = GADRequest()
+            self.interstitial?.load(interstitialRequest)
+            
+            nextJump *= 2
+        }
+    }
     
     func almacenaFecha() {
         let calendar = Calendar.current
@@ -234,14 +276,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         EPOCH = formatter.date(from: "1980/1/06 00:00:00")
     }
-    
-//    func showAlert(titulo : String, mensaje : String) {
-//        let alertView = UIAlertView();
-//        alertView.addButton(withTitle: "Ok");
-//        alertView.title = titulo;
-//        alertView.message = mensaje;
-//        alertView.show();
-//    }
     
     func showAlert(titulo: String, mensaje: String)
     {
